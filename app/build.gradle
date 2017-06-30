@@ -6,6 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.codepath.apps.restclienttemplate"
+        vectorDrawables.useSupportLibrary = true
         minSdkVersion 17
         targetSdkVersion 25
     }
@@ -22,6 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+}
+ext {
+    supportLibVersion = '25.3.1'  // variable that can be referenced to keep support libs consistent
 }
 
 repositories {
@@ -44,5 +48,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:support-vector-drawable:${supportLibVersion}" // VectorDrawableCompat
+    compile "com.android.support:animated-vector-drawable:${supportLibVersion}" // AnimatedVectorDrawableCompat
 }

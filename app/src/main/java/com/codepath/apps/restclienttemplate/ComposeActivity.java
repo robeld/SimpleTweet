@@ -1,10 +1,14 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -17,6 +21,9 @@ import cz.msebera.android.httpclient.Header;
 
 public class ComposeActivity extends AppCompatActivity {
     TwitterClient client;
+    private TextView mTextView;
+    private EditText etCompose;
+    private int color;
     int RESULT_OK = 20;
     public static String TWEET_KEY = "tweet";
     @Override
@@ -24,9 +31,33 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         client = TwitterApp.getRestClient();
+        mTextView = (TextView) findViewById(R.id.mTextView);
+        etCompose = (EditText) findViewById(R.id.etCompose);
+        // code from https://stackoverflow.com/questions/3013791/live-character-count-for-edittext
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String print = Integer.toString(s.length()) + " characters / 140";
+                if (s.length() >= 0 && s.length() <= 70) color = Color.GREEN;
+                if(s.length() > 70 && s.length() <= 140) color = Color.YELLOW;
+                if(s.length() > 140) color = Color.RED;
+                mTextView.setTextColor(color);
+                mTextView.setText(print);
+            }
+        });
     }
+
     public void onSubmit(View v) {
-        EditText etCompose = (EditText) findViewById(R.id.etCompose);
         String body = etCompose.getText().toString();
         client.sendTweet(body, new JsonHttpResponseHandler(){
             Tweet tweet = null;
