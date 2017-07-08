@@ -4,7 +4,7 @@
 
 Time spent: **20** hours spent in total
 
-## User Stories
+## User Stories Pt 1
 
 The following **required** functionality is completed:
 
@@ -48,10 +48,26 @@ The following **additional** features are implemented:
 
 * [ ] List anything else that you can get done to improve the app functionality!
 
+## User Stories Pt 2
+
+* [x] User can switch between Timeline and Mention views using tabs. 
+* [x] User can view their home timeline tweets.
+* [x] User can view the recent mentions of their username.
+* [x] User can navigate to view their own profile
+* [x] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+* [x] User can click on the profile image in any tweet to see another user's profile.
+* [x] User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+* [x] Profile view should include that user's timeline
+
+
 ## Video Walkthrough
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of implemented user stories Pt 1:
 
 ![walkthrough](walkthrough.gif)
+
+Here's a walkthrough of implemented user stories Pt 2:
+
+![walkthrough](walkthrough2.gif)
 
 ## Notes
 
