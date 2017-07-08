@@ -24,6 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         String screenName = getIntent().getStringExtra("screen_name");
+        int profileKey = getIntent().getIntExtra("profile_key", 0);
         // create the user fragment
         UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName);
         // display the user timeline fragment inside the container
@@ -35,18 +36,35 @@ public class ProfileActivity extends AppCompatActivity {
         //commit
         ft.commit();
         client = TwitterApp.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try{
-                    User user = User.fromJSON(response);
-                    // TODO - set toolbar title to user.screenName
-                    populateUserHeadline(user);
-                } catch (JSONException e){
-                    e.printStackTrace();
+        if(profileKey == 1){
+            client.getUserInfo(new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try{
+                        User user = User.fromJSON(response);
+                        // TODO - set toolbar title to user.screenName
+                        populateUserHeadline(user);
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
+        if(profileKey == 2){
+            client.getFriendInfo(screenName, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try{
+                        User user = User.fromJSON(response);
+                        // TODO - set toolbar title to user.screenName
+                        populateUserHeadline(user);
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
     }
     public void populateUserHeadline(User user){
         TextView tvName = (TextView) findViewById(R.id.tvName);

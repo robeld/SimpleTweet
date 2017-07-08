@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -99,6 +100,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                         //fire the listener callback
                         mListener.onItemSelected(view, position);
                     }
+                }
+            });
+            ivProfileImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(position);
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("screen_name", tweet.user.screenName);
+                    i.putExtra("profile_key", 2);
+                    context.startActivity(i);
                 }
             });
 

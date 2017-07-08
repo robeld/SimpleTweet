@@ -13,6 +13,8 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
 
     private String tabTitles[] = new String[] {"Home", "Mentions"};
     private Context context;
+    static HomeTimelineFragment homeTimelineFragment = new HomeTimelineFragment();
+    static MentionsTimelineFragment mentionsTimelineFragment = new MentionsTimelineFragment();
 
     // return the total # of fragments
     public TweetsPagerAdapter(FragmentManager fm, Context context){
@@ -29,9 +31,19 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0 ){
-            return new HomeTimelineFragment();
+            /*if(homeTimelineFragment == null){
+                return new HomeTimelineFragment();
+            } else {
+                return homeTimelineFragment;
+            }*/
+            return homeTimelineFragment;
         } else if(position == 1){
-            return new MentionsTimelineFragment();
+            /*if(mentionsTimelineFragment == null){
+                return new MentionsTimelineFragment();
+            } else {
+                return mentionsTimelineFragment;
+            }*/
+            return mentionsTimelineFragment;
         } else {
             return null;
         }

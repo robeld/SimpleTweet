@@ -7,10 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -18,19 +20,21 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
     // TODO: fix refresh and composition
 
-    int REQUEST_CODE = 20;
-    int RESULT_OK = 20;
+    private final int REQUEST_CODE = 20;
+    public HomeTimelineFragment homeTimelineFragment;
     private SwipeRefreshLayout swipeContainer;
+    public TweetsPagerAdapter tweetsPagerAdapter;
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
+        tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
         //get the view pager
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
         //set the adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        vpPager.setAdapter(tweetsPagerAdapter);
         //set the tablayout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
@@ -66,10 +70,10 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    // TODO - figure out why profile isnt launching (put screen name in intent)
     public void onProfileView(MenuItem item) {
         // launch the profile view
         Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra("profile_key", 1);
         startActivity(i);
     }
 
@@ -109,7 +113,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
-    }
+    } */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.miCompose){
@@ -122,16 +126,20 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         Intent i = new Intent(this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE);
     }
-    @Override
+     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /* REQUEST_CODE is defined above
+        //REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            Tweet tweet = data.getParcelableExtra(TWEET_KEY);
-            Toast.makeText(this, tweet.body, Toast.LENGTH_LONG).show();
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
-        } */
+            Tweet tweet = data.getParcelableExtra(ComposeActivity.TWITTER_KEY);
+            Log.d("TimelineActivity", tweet.body);
+            //Toast.makeText(this, tweet.body, Toast.LENGTH_LONG).show();
+            homeTimelineFragment = (HomeTimelineFragment) tweetsPagerAdapter.getItem(0);
+            vpPager.setCurrentItem(0);
+            homeTimelineFragment.tweets.add(0, tweet);
+            homeTimelineFragment.tweetAdapter.notifyItemInserted(0);
+            homeTimelineFragment.rvTweets.getLayoutManager().scrollToPosition(0);
+        }
+    }
 
 }

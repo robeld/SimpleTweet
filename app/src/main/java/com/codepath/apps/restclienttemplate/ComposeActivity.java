@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,8 +25,7 @@ public class ComposeActivity extends AppCompatActivity {
     private TextView mTextView;
     private EditText etCompose;
     private int color;
-    int RESULT_OK = 20;
-    public static String TWEET_KEY = "tweet";
+    public static String TWITTER_KEY = "tweet_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,19 +60,19 @@ public class ComposeActivity extends AppCompatActivity {
     public void onSubmit(View v) {
         String body = etCompose.getText().toString();
         client.sendTweet(body, new JsonHttpResponseHandler(){
-            Tweet tweet = null;
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                Tweet tweet = null;
                 try {
                     tweet = Tweet.fromJSON(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(ComposeActivity.this, tweet.body, Toast.LENGTH_LONG).show();
                 Intent data = new Intent();
-                data.putExtra(TWEET_KEY, tweet);
+                data.putExtra(TWITTER_KEY, tweet);
                 setResult(RESULT_OK, data);
+                Log.d("ComposeActivity", tweet.body);
                 finish();
             }
 
